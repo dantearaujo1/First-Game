@@ -16,6 +16,7 @@ int main()
   loadTextures(mng);
 
   TileSheet sheet(&mng);
+  sheet.setTileSize(32.0f,32.0f);
   sheet.setTileSheet("tileset1");
 
   sf::Sprite sprite;

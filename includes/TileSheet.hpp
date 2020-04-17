@@ -13,6 +13,8 @@ class TileSheet
 		sf::IntRect getTileRect(int row, int column);
 		sf::Texture* getTexture() { return m_texture;}
 
+		void setTileSize(float x, float y);
+
 	private:
 
 		sf::Texture*		m_texture;
