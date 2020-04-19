@@ -1,15 +1,26 @@
 #include "../includes/TileSheet.hpp"
 #include "../includes/ResourceManager.hpp"
+#include "SFML/Graphics/Rect.hpp"
 
 void loadTextures(ResourceManager& mng)
 {
-  mng.loadTextureFromFile("tileset1","../assets/Tilesets/Pipoya RPG Tileset 32x32/test.png");
+  mng.loadTextureFromFile("tileset1","..\\assets\\Tilesets\\Pipoya RPG Tileset 32x32\\test.png");
+  mng.loadTextureFromFile("tileset2","..\\assets\\Tilesets\\Pipoya RPG World Tileset 48x48 40x40 32x32\\32x32\\pipo-map001.png");
 }
+
 
 int main()
 {
   sf::RenderWindow window;
-  window.create(sf::VideoMode(800, 600), "SFML WORKS");
+  int WIDTH  = 800;
+  int HEIGHT = 600;
+  window.create(sf::VideoMode(WIDTH, HEIGHT), "SFML WORKS");
+
+  sf::View gameView(sf::FloatRect(0.0f, 0.0f, 800.0f, 600.0f));
+  gameView.zoom(0.4f);
+  gameView.setCenter(sf::Vector2f(0.0f,0.0f));
+  window.setView(gameView);
+
   bool running = true;
 
   ResourceManager mng;
@@ -19,9 +30,9 @@ int main()
   sheet.setTileSize(32.0f,32.0f);
   sheet.setTileSheet("tileset1");
 
-  sf::Sprite sprite;
-  sprite.setTexture(*sheet.getTexture());
-  sprite.setTextureRect(sf::IntRect(0,0,32,32));
+  sf::Sprite sp;
+  sp.setTexture(*sheet.getTexture());
+
 
   sf::Event e;
 
@@ -45,7 +56,7 @@ int main()
 	}
 
 	window.clear(sf::Color::Blue);
-	window.draw(sprite);
+	window.draw(sp);
 	window.display();
 
   }

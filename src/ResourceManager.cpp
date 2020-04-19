@@ -19,6 +19,7 @@ bool ResourceManager::loadTextureFromFile(const std::string& id, const std::stri
 		return false;
 	}
 
+	std::cout << "Loading the " << filepath << " as: " << id << std::endl;
 	std::shared_ptr<sf::Texture> temp = std::make_shared<sf::Texture>();
 
 	if (temp->loadFromFile(filepath))
@@ -45,15 +46,14 @@ bool ResourceManager::hasID(const std::string& id)
 	{
 		return true;
 	}
-	std::cout << "We couldn't find this texture in the manager" << std::endl;
 	return false;
 }
 
 std::shared_ptr<sf::Texture> ResourceManager::getTexture(const std::string& id)
 {
-	if(!hasID(id))
+	if(hasID(id))
 	{
-		return nullptr;
+		return m_textures[id];
 	}
-	return m_textures[id];
+	return nullptr;
 }

@@ -22,8 +22,10 @@ find_package(SFML 2.5.1 COMPONENTS 	system
 
 add_executable(RPGame 	src/main.cpp
 						src/TileSheet.cpp
+						src/TileMap.cpp
 						src/ResourceManager.cpp
 						includes/ResourceManager.hpp
+						includes/Tilemap.hpp
 						includes/TileSheet.hpp)
 
 set_target_properties	(RPGame	PROPERTIES
