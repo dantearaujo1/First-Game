@@ -21,12 +21,10 @@ find_package(SFML 2.5.1 COMPONENTS 	system
 									REQUIRED)
 
 add_executable(RPGame 	src/main.cpp
-						src/TileSheet.cpp
-						src/TileMap.cpp
+						src/Tilemap.cpp
 						src/ResourceManager.cpp
 						includes/ResourceManager.hpp
-						includes/Tilemap.hpp
-						includes/TileSheet.hpp)
+						includes/Tilemap.hpp)
 
 set_target_properties	(RPGame	PROPERTIES
 								RUNTIME_OUTPUT_DIRECTORY ${PROJECT_SOURCE_DIR}\\bin

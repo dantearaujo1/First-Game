@@ -1,7 +1,8 @@
 * This is a List of all the things that we need to do in my game
 
-** Create a Tilesheet Class that returns a rectangle for each object
-** Create a Layer Class
-** Create a Renderer?
-** Create a Chunk Class for a big world
-** Create a Create a Map Class
+** TODO Create a Tilesheet Class that has info about an Tilesheet file.
+** TODO Create a Tilemap Class that is capable of rendering a bunch of tiles.
+** TODO Create a Layer Class capable of render in z order a lot of tilemaps.
+** TODO Create a Renderer?
+** TODO Create a Chunk Class for a big world
+** TODO Create a Create a Map Class
