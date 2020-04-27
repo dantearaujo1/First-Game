@@ -17,6 +17,8 @@ int main()
 	constexpr int HEIGHT = 608;
 	constexpr int screenSizeX = WIDTH / 32;
 	constexpr int screenSizeY = HEIGHT / 32;
+	constexpr int tileSizeX = 32;
+	constexpr int tileSizeY = 32;
 
 	sf::RenderWindow window;
 	window.create(sf::VideoMode(WIDTH, HEIGHT), "SFML WORKS");
@@ -32,12 +34,15 @@ int main()
 	sf::Vector2f mousePosView;
 	sf::Vector2u mousePosGrid;
 
-	sf::Text debugText;
 	sf::Font font;
 	font.loadFromFile("../assets/Fonts/arial.ttf");
+	sf::Text debugText;
 	debugText.setFont(font);
 	debugText.setFillColor(sf::Color::Red);
 	debugText.setCharacterSize(20);
+	sf::RectangleShape tileSelector;
+	tileSelector.setFillColor(sf::Color::Green);
+	tileSelector.setSize(sf::Vector2f(static_cast<float> ( tileSizeX ), static_cast<float> ( tileSizeY )));
 
 	bool running = true;
 	bool debug = false;
@@ -56,12 +61,12 @@ int main()
 	{
 		8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
 		8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
-		8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
-		8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
-		8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
-		8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
-		8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
-		8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 0, 0, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+		8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 1, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+		8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 1, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+		8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 1, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+		8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 1, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+		8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 1, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
+		8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 1, 1, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
 		8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
 		8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
 		8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8, 8,
@@ -81,18 +86,27 @@ int main()
 
 	while (running)
 	{
+		// Calculating how much time a frame has and
+		// storing this value in a dt variable
 		currentTime = clock.getElapsedTime().asSeconds();
-		dt = newTime - currentTime;
+		dt = currentTime- newTime ;
 		newTime = currentTime;
 
 		// Gettings Mouse relatives positions
+		// To the Monitor, Screen, View and Grid;
 		mousePosMonitor = sf::Mouse::getPosition();
 		mousePosWindow = sf::Mouse::getPosition(window);
 		mousePosView = window.mapPixelToCoords(mousePosWindow);
-		mousePosGrid.x = static_cast<unsigned int>( mousePosView.x / 32.0f );
-		mousePosGrid.y = static_cast<unsigned int>( mousePosView.y / 32.0f );
-		if (mousePosGrid.x <= 0) mousePosGrid.x = 0;
-		if (mousePosGrid.y <= 0) mousePosGrid.y = 0;
+		if (mousePosView.x <= 0)
+		{
+			mousePosView.x = 0;
+		}
+		if (mousePosView.y <= 0)
+		{
+			mousePosView.y = 0;
+		}
+		mousePosGrid.x = static_cast<unsigned int>( mousePosView.x / tileSizeX );
+		mousePosGrid.y = static_cast<unsigned int>( mousePosView.y / tileSizeY );
 
 		if(debug)
 		{
@@ -100,9 +114,11 @@ int main()
 			debugString	<< "Monitor coordinates: (" << mousePosMonitor.x << "," << mousePosMonitor.y << ")"<< "\n"
 						<< "Window coordinates: (" << mousePosWindow.x << "," << mousePosWindow.y << ")"<< "\n"
 						<< "View coordinates: (" << mousePosView.x << "," << mousePosView.y << ")"<< "\n"
-						<< "Grid coordinates: (" << mousePosGrid.x << "," << mousePosGrid.y << ")"<< "\n";
+						<< "Grid coordinates: (" << mousePosGrid.x << "," << mousePosGrid.y << ")"<< "\n"
+						<< "FPS: " <<  ( 1/dt ) <<"\n";
 
 			debugText.setString(debugString.str());
+			tileSelector.setPosition(static_cast<sf::Vector2f>( mousePosGrid ) * static_cast<float>( tileSizeX ));
 		}
 
 		while (window.pollEvent(e))
@@ -144,14 +160,20 @@ int main()
 			gameView.move(sf::Vector2f(0.0f,1.0f));
 		}
 
-
-
 		window.clear(sf::Color::Black);
+
+		//Setting A Game View to Draw into.
 		window.setView(gameView);
 		window.draw(map);
 
 		if (debug)
 		{
+			//Debug Drawing before the GUI TEXT Layer should be called
+			//Before changing the view to the Default.
+			window.draw(tileSelector);
+
+			//Debug Information that is Printed static in the Window
+			//Should be put after setting the View to the Default.
 			window.setView(window.getDefaultView());
 			window.draw(debugText);
 			window.setView(gameView);

@@ -24,6 +24,7 @@ add_executable(RPGame 	src/main.cpp
 						src/Tilemap.cpp
 						src/ResourceManager.cpp
 						includes/ResourceManager.hpp
+						includes/Utils.hpp
 						includes/Tilemap.hpp)
 
 set_target_properties	(RPGame	PROPERTIES
